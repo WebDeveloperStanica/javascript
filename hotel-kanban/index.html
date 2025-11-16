@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Staff Kanban</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>Hotel Staff Kanban</h1>
+      <p class="subtitle">Plan and track daily work for maintenance, front-of-house, and service teams.</p>
+    </div>
+    <div class="controls">
+      <label>
+        Role filter
+        <select id="roleFilter"></select>
+      </label>
+      <label>
+        Search
+        <input type="search" id="searchInput" placeholder="Search tasks or assignees" />
+      </label>
+      <button id="exportJson" class="ghost">Export JSON</button>
+      <button id="resetBoard" class="ghost">Reset to sample data</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="new-task">
+      <h2>Create a task</h2>
+      <form id="taskForm">
+        <div class="form-grid">
+          <label>
+            Title
+            <input required name="title" maxlength="80" placeholder="Deliver room service tray" />
+          </label>
+          <label>
+            Assignee
+            <select required name="assignee"></select>
+          </label>
+          <label>
+            Role
+            <select required name="role"></select>
+          </label>
+          <label>
+            Priority
+            <select name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </label>
+          <label>
+            Due date
+            <input type="date" name="dueDate" />
+          </label>
+        </div>
+        <label>
+          Details
+          <textarea name="description" rows="3" placeholder="What needs to happen? Include room numbers, shift windows, or guests."></textarea>
+        </label>
+        <button type="submit">Add task</button>
+      </form>
+    </section>
+
+    <section class="board" aria-label="Kanban board">
+      <div class="column" data-status="backlog">
+        <header>
+          <h3>Backlog</h3>
+          <span class="count" data-count="backlog">0</span>
+        </header>
+        <div class="column-body" id="backlog"></div>
+      </div>
+      <div class="column" data-status="in-progress">
+        <header>
+          <h3>In progress</h3>
+          <span class="count" data-count="in-progress">0</span>
+        </header>
+        <div class="column-body" id="in-progress"></div>
+      </div>
+      <div class="column" data-status="review">
+        <header>
+          <h3>Review</h3>
+          <span class="count" data-count="review">0</span>
+        </header>
+        <div class="column-body" id="review"></div>
+      </div>
+      <div class="column" data-status="done">
+        <header>
+          <h3>Done</h3>
+          <span class="count" data-count="done">0</span>
+        </header>
+        <div class="column-body" id="done"></div>
+      </div>
+    </section>
+  </main>
+
+  <template id="taskTemplate">
+    <article class="card" draggable="true">
+      <div class="card-header">
+        <div>
+          <p class="meta">#<span data-field="id"></span> · <span data-field="role"></span></p>
+          <h4 data-field="title"></h4>
+        </div>
+        <span class="pill" data-field="priority"></span>
+      </div>
+      <p class="description" data-field="description"></p>
+      <dl class="meta-list">
+        <div>
+          <dt>Assignee</dt>
+          <dd data-field="assignee"></dd>
+        </div>
+        <div>
+          <dt>Due</dt>
+          <dd data-field="dueDate"></dd>
+        </div>
+      </dl>
+      <div class="actions">
+        <button type="button" data-action="prev">◀</button>
+        <button type="button" data-action="next">▶</button>
+        <button type="button" class="ghost" data-action="remove">Remove</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
